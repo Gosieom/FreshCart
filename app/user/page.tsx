@@ -1,8 +1,5 @@
-export default function UserPage() {
-  return (
-    <main style={{ padding: "40px" }}>
-      <h1>User Dashboard</h1>
-      <p>This page is for normal FreshCart users.</p>
-    </main>
-  );
+"use client"; // needed if using hooks
+
+export default function LoginPage() {
+  return <div>Login Page</div>;
 }

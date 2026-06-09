@@ -17,19 +17,18 @@ export default function GetStartedPage() {
           />
         </div>
 
-        {/* <h1>FreshCart</h1> */}
-
         <p>
           Smart online grocery shopping system with login and registration
           module.
         </p>
 
         <div className="get_started_actions">
-          <Link href="/login" className="login_btn">
+          {/* Corrected links */}
+          <Link href="/user/login" className="login_btn">
             Login
           </Link>
 
-          <Link href="/register" className="register_btn">
+          <Link href="/user/register" className="register_btn">
             Register
           </Link>
         </div>
