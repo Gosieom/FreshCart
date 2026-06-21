@@ -1,15 +1,25 @@
-// app/layout.tsx
-import "./globals.css"; // optional, for global styles
+import "./globals.css";
+import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "FreshCart",
   description: "Fresh groceries delivered to your doorstep",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+          <Toaster position="top-right" />
+        </AuthProvider>
+      </body>
     </html>
   );
 }

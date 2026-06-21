@@ -8,34 +8,38 @@ import { User, Mail, Phone, Lock, Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../../../validations/registerSchema";
-import axios from "axios";
+import { registerUser } from "../../../services/auth";
 import "./register.css";
 
 export default function RegisterPage() {
   const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
     resolver: zodResolver(registerSchema),
   });
 
   const handleRegisterSubmit = async (data: any) => {
     try {
-      // Use full backend URL to avoid environment issues
-      const response = await axios.post("http://localhost:5000/api/users/register", data);
+      setError("");
 
-      if (response.status === 201) {
-        // Optional: show success message on login page
-        sessionStorage.setItem("accountCreatedMessage", "Account created successfully!");
-        router.push("/user/login"); // Redirect to login page
-      } else {
-        setError(response.data.message || "Registration failed");
-      }
+      await registerUser(data);
+
+      sessionStorage.setItem(
+        "accountCreatedMessage",
+        "Account created successfully!"
+      );
+
+      router.push("/user/login");
     } catch (err: any) {
-      console.error(err.response?.data || err.message);
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.message || "Registration failed");
     }
   };
 
@@ -58,7 +62,8 @@ export default function RegisterPage() {
             <div className="register_visual_content">
               <h2>Fresh groceries delivered with speed and care.</h2>
               <p>
-                Shop fresh vegetables, fruits, and daily essentials from trusted local farms — delivered straight to your doorstep.
+                Shop fresh vegetables, fruits, and daily essentials from trusted
+                local farms — delivered straight to your doorstep.
               </p>
             </div>
           </div>
@@ -67,59 +72,123 @@ export default function RegisterPage() {
         <div className="register_right">
           <div className="register_card">
             <h2>Create Account</h2>
-            <form onSubmit={handleSubmit(handleRegisterSubmit)} className="register_form">
+
+            <form
+              onSubmit={handleSubmit(handleRegisterSubmit)}
+              className="register_form"
+            >
               <div className="form_group">
                 <label>Full Name</label>
                 <div className="input_wrapper">
                   <User size={18} className="input_icon" />
-                  <input type="text" placeholder="Enter your full name" {...register("fullName")} />
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    {...register("fullName")}
+                  />
                 </div>
-                {errors.fullName && <p className="error_text">{errors.fullName.message}</p>}
+                {errors.fullName && (
+                  <p className="error_text">
+                    {errors.fullName.message as string}
+                  </p>
+                )}
               </div>
 
               <div className="form_group">
                 <label>Email Address</label>
                 <div className="input_wrapper">
                   <Mail size={18} className="input_icon" />
-                  <input type="email" placeholder="you@gmail.com" {...register("email")} />
+                  <input
+                    type="email"
+                    placeholder="you@gmail.com"
+                    {...register("email")}
+                  />
                 </div>
-                {errors.email && <p className="error_text">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="error_text">
+                    {errors.email.message as string}
+                  </p>
+                )}
               </div>
 
               <div className="form_group">
                 <label>Phone Number</label>
                 <div className="input_wrapper">
                   <Phone size={18} className="input_icon" />
-                  <input type="text" placeholder="+977-98XXXXXXXX" {...register("phone")} />
+                  <input
+                    type="text"
+                    placeholder="+977-98XXXXXXXX"
+                    {...register("phone")}
+                  />
                 </div>
-                {errors.phone && <p className="error_text">{errors.phone.message}</p>}
+                {errors.phone && (
+                  <p className="error_text">
+                    {errors.phone.message as string}
+                  </p>
+                )}
               </div>
 
               <div className="form_group">
                 <label>Password</label>
                 <div className="input_wrapper">
                   <Lock size={18} className="input_icon" />
-                  <input type={showPassword ? "text" : "password"} placeholder="Create password" {...register("password")} />
-                  <button type="button" className="password_toggle_btn" onClick={() => setShowPassword(!showPassword)}>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Create password"
+                    {...register("password")}
+                  />
+
+                  <button
+                    type="button"
+                    className="password_toggle_btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {errors.password && <p className="error_text">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="error_text">
+                    {errors.password.message as string}
+                  </p>
+                )}
               </div>
 
               <div className="form_group">
                 <label>Confirm Password</label>
                 <div className="input_wrapper">
                   <Lock size={18} className="input_icon" />
-                  <input type={showConfirmPassword ? "text" : "password"} placeholder="Confirm password" {...register("confirmPassword")} />
-                  <button type="button" className="password_toggle_btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm password"
+                    {...register("confirmPassword")}
+                  />
+
+                  <button
+                    type="button"
+                    className="password_toggle_btn"
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
                   </button>
                 </div>
-                {errors.confirmPassword && <p className="error_text">{errors.confirmPassword.message}</p>}
+                {errors.confirmPassword && (
+                  <p className="error_text">
+                    {errors.confirmPassword.message as string}
+                  </p>
+                )}
               </div>
 
-              <button type="submit" className="register_submit_btn" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="register_submit_btn"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Creating Account..." : "Create Account"}
               </button>
 
@@ -127,7 +196,8 @@ export default function RegisterPage() {
             </form>
 
             <p className="login_prompt">
-              Already have an account? <Link href="/user/login">Login here</Link>
+              Already have an account?{" "}
+              <Link href="/user/login">Login here</Link>
             </p>
           </div>
         </div>
