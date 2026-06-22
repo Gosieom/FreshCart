@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/user/dashboard", "/user/profile", "/user/password"];
-
+const protectedRoutes = [
+  "/user/dashboard",
+  "/user/profile",
+  "/user/password",
+  "/user/categories",
+  "/user/cart",
+  "/user/address",
+];
 const publicRoutes = [
   "/user/login",
   "/user/register",
@@ -37,6 +43,9 @@ export const config = {
     "/user/dashboard/:path*",
     "/user/profile/:path*",
     "/user/password/:path*",
+    "/user/categories/:path*",
+    "/user/cart/:path*",
+    "/user/address/:path*",
     "/user/login",
     "/user/register",
     "/user/forgot_password",

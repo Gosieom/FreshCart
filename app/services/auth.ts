@@ -66,3 +66,18 @@ export const updateUserProfile = async (formData: FormData) => {
 
   return result;
 };
+
+export const removeUserProfileImage = async () => {
+  const res = await fetch("/api/auth/profile-image", {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Profile image remove failed");
+  }
+
+  return result;
+};
