@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import "./forgot_password.css";
+import "./forgot-password.css";
 
 export default function ForgotPasswordPage() {
   return (

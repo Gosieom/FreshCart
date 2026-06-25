@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   Save,
 } from "lucide-react";
-import { updateUserProfile } from "@/app/services/auth";
+import { updateUserProfile } from "@/lib/api/auth";
 import "./password.css";
 
 export default function PasswordUpdatePage() {
