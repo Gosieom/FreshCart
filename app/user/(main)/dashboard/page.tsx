@@ -15,12 +15,10 @@ import {
   Star,
   Home,
   Grid3X3,
-  Clock,
   ChevronRight,
   ChevronLeft,
   Tag,
   Leaf,
-  Store,
   X,
   Package,
   HeartHandshake,
@@ -33,17 +31,7 @@ import {
 import { useAuth } from "@/lib/contexts/AuthContext";
 import "./dashboard.css";
 
-type ViewType = "home" | "store" | "grocery" | "offers" | "category";
-
-type StoreItem = {
-  id: number;
-  name: string;
-  image: string;
-  delivery: string;
-  badge: string;
-  category: string;
-  hasOffer?: boolean;
-};
+type ViewType = "home" | "grocery" | "offers" | "category";
 
 type CategoryItem = {
   id: number;
@@ -113,16 +101,6 @@ const banners: BannerItem[] = [
   },
   {
     id: 2,
-    title: "Explore nearby stores",
-    subtitle: "Shop from Fresh Mart, Green Basket, Daily Dairy and more.",
-    buttonText: "View stores",
-    image:
-      "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=900&auto=format&fit=crop",
-    variant: "stores",
-    view: "store",
-  },
-  {
-    id: 3,
     title: "Shop all fresh items",
     subtitle: "Everything you need for your kitchen, delivered fresh and fast.",
     buttonText: "Shop all",
@@ -130,66 +108,6 @@ const banners: BannerItem[] = [
       "https://images.unsplash.com/photo-1610348725531-843dff563e2c?w=900&auto=format&fit=crop",
     variant: "allshop",
     view: "grocery",
-  },
-];
-
-const stores: StoreItem[] = [
-  {
-    id: 1,
-    name: "Fresh Mart",
-    image:
-      "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=500&auto=format&fit=crop",
-    delivery: "By 12:30pm",
-    badge: "No markups",
-    category: "Grocery",
-  },
-  {
-    id: 2,
-    name: "Green Basket",
-    image:
-      "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop",
-    delivery: "20 min",
-    badge: "Fresh items",
-    category: "Vegetables",
-  },
-  {
-    id: 3,
-    name: "Fruit House",
-    image:
-      "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=500&auto=format&fit=crop",
-    delivery: "30 min",
-    badge: "Rs. 50 off",
-    category: "Fruits",
-    hasOffer: true,
-  },
-  {
-    id: 4,
-    name: "Daily Dairy",
-    image:
-      "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=500&auto=format&fit=crop",
-    delivery: "By 1:00pm",
-    badge: "Fresh dairy",
-    category: "Dairy",
-  },
-  {
-    id: 5,
-    name: "Bakery Hub",
-    image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop",
-    delivery: "45 min",
-    badge: "15% off",
-    category: "Bakery",
-    hasOffer: true,
-  },
-  {
-    id: 6,
-    name: "Budget Store",
-    image:
-      "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=500&auto=format&fit=crop",
-    delivery: "Today",
-    badge: "Bulk pricing",
-    category: "Grocery",
-    hasOffer: true,
   },
 ];
 
@@ -392,18 +310,6 @@ export default function DashboardPage() {
     });
   }, [searchedProducts, activeFilter]);
 
-  const filteredStores = useMemo(() => {
-    return stores.filter((store) => {
-      const text = searchText.toLowerCase();
-
-      return (
-        store.name.toLowerCase().includes(text) ||
-        store.category.toLowerCase().includes(text) ||
-        store.badge.toLowerCase().includes(text)
-      );
-    });
-  }, [searchText]);
-
   const searchedAddresses = savedAddresses.filter((address) => {
     const text = addressSearch.toLowerCase();
 
@@ -414,7 +320,6 @@ export default function DashboardPage() {
   });
 
   const offerProducts = searchedProducts.filter((product) => product.discount);
-  const offerStores = filteredStores.filter((store) => store.hasOffer);
 
   const handlePreviousBanner = () => {
     setActiveBanner((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
@@ -492,36 +397,7 @@ export default function DashboardPage() {
     setIsAddressModalOpen(false);
   };
 
-  const banner = banners[activeBanner];
-
-  const renderStoreCards = (items: StoreItem[]) => (
-    <div className="fc_store_row">
-      {items.map((store) => (
-        <button
-          type="button"
-          className="fc_store_item"
-          key={store.id}
-          onClick={() => {
-            setActiveView("grocery");
-            setActiveFilter("All");
-          }}
-        >
-          <div className="fc_store_image">
-            <img src={store.image} alt={store.name} />
-          </div>
-
-          <h3>{store.name}</h3>
-
-          <p>
-            <Clock size={15} />
-            {store.delivery}
-          </p>
-
-          <mark>{store.badge}</mark>
-        </button>
-      ))}
-    </div>
-  );
+  const banner = banners[activeBanner % banners.length];
 
   const renderCategoryCards = () => (
     <div className="fc_category_grid">
@@ -581,7 +457,10 @@ export default function DashboardPage() {
                   {product.oldPrice && <del>{product.oldPrice}</del>}
                 </div>
 
-                <button type="button" onClick={() => handleAddToCart(product.id)}>
+                <button
+                  type="button"
+                  onClick={() => handleAddToCart(product.id)}
+                >
                   <Plus size={19} />
                   {quantity > 0 && <span>{quantity}</span>}
                 </button>
@@ -656,7 +535,7 @@ export default function DashboardPage() {
           <input
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            placeholder="Search products, stores, and groceries"
+            placeholder="Search products and groceries"
           />
         </div>
 
@@ -693,18 +572,6 @@ export default function DashboardPage() {
             >
               <Home size={25} />
               Home
-            </button>
-
-            <button
-              type="button"
-              className={activeView === "store" ? "active" : ""}
-              onClick={() => {
-                setActiveView("store");
-                setActiveFilter("All");
-              }}
-            >
-              <Store size={25} />
-              Store
             </button>
 
             <button
@@ -805,24 +672,6 @@ export default function DashboardPage() {
                 </div>
               </section>
 
-              <section className="fc_store_section">
-                <div className="fc_section_title">
-                  <h2>Stores near you</h2>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveView("store");
-                      setActiveFilter("All");
-                    }}
-                  >
-                    View all
-                  </button>
-                </div>
-
-                {renderStoreCards(filteredStores)}
-              </section>
-
               <section className="fc_category_section">
                 <div className="fc_section_title">
                   <h2>Shop by category</h2>
@@ -861,19 +710,6 @@ export default function DashboardPage() {
             </>
           )}
 
-          {activeView === "store" && (
-            <section className="fc_page_section">
-              <div className="fc_page_header">
-                <div>
-                  <h1>Available stores near you</h1>
-                  <p>Choose a store and start shopping fresh grocery items.</p>
-                </div>
-              </div>
-
-              {renderStoreCards(filteredStores)}
-            </section>
-          )}
-
           {activeView === "grocery" && (
             <section className="fc_page_section">
               <div className="fc_page_header">
@@ -892,15 +728,9 @@ export default function DashboardPage() {
               <div className="fc_page_header">
                 <div>
                   <h1>FreshCart offers</h1>
-                  <p>Discounted products and store offers available today.</p>
+                  <p>Discounted products available today.</p>
                 </div>
               </div>
-
-              <div className="fc_section_title">
-                <h2>Store offers</h2>
-              </div>
-
-              {renderStoreCards(offerStores)}
 
               <div className="fc_section_title fc_offer_products_title">
                 <h2>Discounted products</h2>
@@ -1067,11 +897,11 @@ export default function DashboardPage() {
                   </button>
                 </section>
 
-        <footer className="fc_cart_drawer_footer">
-         <button type="button" className="fc_cart_checkout_btn">
-         Go to checkout
-         </button>
-       </footer>
+                <footer className="fc_cart_drawer_footer">
+                  <button type="button" className="fc_cart_checkout_btn">
+                    Go to checkout
+                  </button>
+                </footer>
               </>
             )}
           </aside>
@@ -1197,13 +1027,13 @@ export default function DashboardPage() {
                 type="button"
                 className="fc_drawer_active"
                 onClick={() => {
-                  setActiveView("store");
+                  setActiveView("grocery");
                   setActiveFilter("All");
                   setIsAccountDrawerOpen(false);
                 }}
               >
-                <Store size={22} />
-                Stores
+                <Leaf size={22} />
+                Grocery
               </button>
 
               <button type="button">
