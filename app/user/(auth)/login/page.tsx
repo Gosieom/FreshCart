@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../../../validations/loginSchema";
-import { loginUser } from "../../../services/auth";
-import { useAuth } from "../../../context/AuthContext";
+import { loginSchema } from "@/lib/validations/loginSchema";
+import { loginUser } from "@/lib/api/auth";
+import { useAuth } from "@/lib/contexts/AuthContext";
 import "./login.css";
 
 export default function LoginPage() {

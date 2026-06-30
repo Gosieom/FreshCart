@@ -14,11 +14,11 @@ import {
   ChevronRight,
   Save,
 } from "lucide-react";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/lib/contexts/AuthContext";
 import {
   removeUserProfileImage,
   updateUserProfile,
-} from "@/app/services/auth";
+} from "@/lib/api/auth";
 import "./profile.css";
 
 const BACKEND_URL = "http://localhost:5000";

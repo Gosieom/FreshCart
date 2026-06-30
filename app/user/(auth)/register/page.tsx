@@ -7,8 +7,8 @@ import { useState } from "react";
 import { User, Mail, Phone, Lock, Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "../../../validations/registerSchema";
-import { registerUser } from "../../../services/auth";
+import { registerSchema } from "@/lib/validations/registerSchema";
+import { registerUser } from "@/lib/api/auth";
 import "./register.css";
 
 export default function RegisterPage() {
