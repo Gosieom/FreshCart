@@ -37,9 +37,15 @@ export const loginUser = async (data: any) => {
 };
 
 export const getLoggedInUser = async () => {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const res = await fetch("/api/auth/whoami", {
     method: "GET",
     credentials: "include",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
   });
 
   const result = await res.json();
@@ -52,15 +58,22 @@ export const getLoggedInUser = async () => {
 };
 
 export const updateUserProfile = async (formData: FormData) => {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const res = await fetch("/api/auth/update", {
     method: "PATCH",
     credentials: "include",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
     body: formData,
   });
 
   const result = await res.json();
 
   if (!res.ok) {
+    console.log("Profile update error:", result);
     throw new Error(result.message || "Profile update failed");
   }
 
@@ -68,15 +81,59 @@ export const updateUserProfile = async (formData: FormData) => {
 };
 
 export const removeUserProfileImage = async () => {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const res = await fetch("/api/auth/profile-image", {
     method: "DELETE",
     credentials: "include",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
   });
 
   const result = await res.json();
 
   if (!res.ok) {
     throw new Error(result.message || "Profile image remove failed");
+  }
+
+  return result;
+};
+
+export const requestPasswordReset = async (email: string) => {
+  const res = await fetch("/api/auth/request-password-reset", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ email }),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Failed to send reset email");
+  }
+
+  return result;
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  const res = await fetch(`/api/auth/reset-password/${token}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ newPassword }),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Failed to reset password");
   }
 
   return result;
