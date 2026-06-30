@@ -2,70 +2,123 @@
 
 import {
   createContext,
+  ReactNode,
   useContext,
   useEffect,
   useState,
-  ReactNode,
 } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-type User = {
-  id: string;
-  fullName: string;
-  email: string;
+type AuthUser = {
+  id?: string;
+  _id?: string;
+  fullName?: string;
+  name?: string;
+  email?: string;
   phone?: string;
   profileImage?: string;
+  role?: "user" | "admin";
+  status?: string;
 };
 
 type AuthContextType = {
-  user: User | null;
+  user: AuthUser | null;
   loading: boolean;
-  setUser: (user: User | null) => void;
-  refreshUser: () => Promise<void>;
-  logout: () => Promise<void>;
+  setUser: (user: AuthUser | null) => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [user, setUserState] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshUser = async () => {
-    try {
-      setLoading(true);
+  const setUser = (userData: AuthUser | null) => {
+    setUserState(userData);
 
-      const res = await fetch("/api/auth/whoami", {
-        method: "GET",
-        credentials: "include",
-      });
+    if (typeof window === "undefined") return;
 
-      const data = await res.json();
+    if (!userData) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("adminUser");
+      sessionStorage.removeItem("adminToken");
+      return;
+    }
 
-      if (res.ok && data.user) {
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      setUser(null);
-    } finally {
-      setLoading(false);
+    if (userData.role === "admin") {
+      sessionStorage.setItem("adminUser", JSON.stringify(userData));
+    } else {
+      localStorage.setItem("user", JSON.stringify(userData));
     }
   };
 
-  const logout = async () => {
-    await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    setUser(null);
-    window.location.href = "/user/login";
-  };
-
   useEffect(() => {
-    refreshUser();
-  }, []);
+    const loadStoredUser = () => {
+      try {
+        setLoading(true);
+
+        const isAdminRoute = pathname?.startsWith("/admin");
+
+        if (isAdminRoute) {
+          const adminToken = sessionStorage.getItem("adminToken");
+          const adminUser = sessionStorage.getItem("adminUser");
+
+          if (adminToken && adminUser) {
+            const parsedAdmin = JSON.parse(adminUser);
+
+            if (parsedAdmin?.role === "admin") {
+              setUserState(parsedAdmin);
+              return;
+            }
+          }
+
+          setUserState(null);
+          return;
+        }
+
+        const token = localStorage.getItem("token");
+        const storedUser = localStorage.getItem("user");
+
+        if (token && storedUser) {
+          const parsedUser = JSON.parse(storedUser);
+
+          if (parsedUser?.role !== "admin") {
+            setUserState(parsedUser);
+            return;
+          }
+        }
+
+        setUserState(null);
+      } catch (error) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("adminUser");
+        sessionStorage.removeItem("adminToken");
+        setUserState(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStoredUser();
+  }, [pathname]);
+
+const logout = () => {
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+
+  sessionStorage.removeItem("adminUser");
+  sessionStorage.removeItem("adminToken");
+
+  setUserState(null);
+
+  router.replace("/user/login");
+};
 
   return (
     <AuthContext.Provider
@@ -73,7 +126,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         loading,
         setUser,
-        refreshUser,
         logout,
       }}
     >

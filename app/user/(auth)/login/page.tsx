@@ -7,15 +7,16 @@ import { useEffect, useState } from "react";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { loginSchema } from "@/lib/validations/loginSchema";
 import { loginUser } from "@/lib/api/auth";
 import { useAuth } from "@/lib/contexts/AuthContext";
+
 import "./login.css";
 
 export default function LoginPage() {
   const router = useRouter();
-
-  const { setUser } = useAuth();
+  const { user, loading, setUser } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -44,19 +45,64 @@ export default function LoginPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (loading || !user) return;
+
+    if (user.role === "admin") {
+      router.replace("/admin/dashboard");
+    } else {
+      router.replace("/user/dashboard");
+    }
+  }, [user, loading, router]);
+
   const onSubmit = async (data: any) => {
     try {
       setError("");
 
       const response = await loginUser(data);
 
-      const loggedInUser = response?.data?.user || response?.user;
+      const responseData = response?.data?.data || response?.data || response;
 
-      if (loggedInUser) {
-        setUser(loggedInUser);
+      const loggedInUser =
+        responseData?.user ||
+        response?.user ||
+        response?.data?.user ||
+        response?.data?.data?.user;
+
+      const token =
+        responseData?.token ||
+        response?.token ||
+        response?.data?.token ||
+        response?.data?.data?.token;
+
+      if (!loggedInUser) {
+        throw new Error("Login response does not contain user data");
       }
 
-      router.push("/user/dashboard");
+      if (!token) {
+        throw new Error("Login response does not contain token");
+      }
+
+      if (loggedInUser.role === "admin") {
+        sessionStorage.setItem("adminToken", token);
+        sessionStorage.setItem("adminUser", JSON.stringify(loggedInUser));
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+
+        setUser(loggedInUser);
+        router.replace("/admin/dashboard");
+      } else {
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(loggedInUser));
+
+        sessionStorage.removeItem("adminToken");
+        sessionStorage.removeItem("adminUser");
+
+        setUser(loggedInUser);
+        router.replace("/user/dashboard");
+      }
+
       router.refresh();
     } catch (err: any) {
       setError(err.message || "Login failed");
@@ -112,14 +158,17 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="form_group">
                 <label>Email Address</label>
+
                 <div className="input_wrapper">
                   <Mail size={18} className="input_icon" />
+
                   <input
                     type="email"
                     placeholder="you@gmail.com"
                     {...register("email")}
                   />
                 </div>
+
                 {errors.email && (
                   <p className="error_text">
                     {errors.email.message as string}
@@ -129,8 +178,10 @@ export default function LoginPage() {
 
               <div className="form_group">
                 <label>Password</label>
+
                 <div className="input_wrapper">
                   <Lock size={18} className="input_icon" />
+
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter password"
@@ -140,16 +191,21 @@ export default function LoginPage() {
                   <button
                     type="button"
                     className="password_toggle_btn"
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() => setShowPassword((prev) => !prev)}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+
                 {errors.password && (
                   <p className="error_text">
                     {errors.password.message as string}
                   </p>
                 )}
+
+                <div className="forgot_password_row">
+                  <Link href="/user/forgot-password">Forgot password?</Link>
+                </div>
               </div>
 
               <button
