@@ -382,3 +382,20 @@
 }
 
 }
+
+.forgot_password_row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.forgot_password_row a {
+  color: #087c2f;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.forgot_password_row a:hover {
+  text-decoration: underline;
+}
