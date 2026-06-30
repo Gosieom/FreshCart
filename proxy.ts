@@ -1,38 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = [
-  "/user/dashboard",
-  "/user/profile",
-  "/user/password",
-  "/user/categories",
-  "/user/cart",
-  "/user/address",
-];
-const publicRoutes = [
+const authPages = [
   "/user/login",
   "/user/register",
-  "/user/forgot_password",
-  "/user/reset_password",
+  "/user/forgot-password",
+  "/user/reset-password",
 ];
 
+const protectedUserPages = [
+  "/user/dashboard",
+  "/user/account",
+  "/user/password",
+];
+
+const protectedAdminPages = ["/admin"];
+
 export function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
   const token = req.cookies.get("token")?.value;
-  const pathname = req.nextUrl.pathname;
 
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
+  const isAuthPage = authPages.some((path) => pathname.startsWith(path));
+  const isProtectedUserPage = protectedUserPages.some((path) =>
+    pathname.startsWith(path)
+  );
+  const isProtectedAdminPage = protectedAdminPages.some((path) =>
+    pathname.startsWith(path)
   );
 
-  const isPublicRoute = publicRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
-
-  if (isProtectedRoute && !token) {
-    return NextResponse.redirect(new URL("/user/login", req.url));
+  // Allow login/register pages to always open.
+  // Do NOT redirect from /user/login to dashboard just because token exists.
+  if (isAuthPage) {
+    return NextResponse.next();
   }
 
-  if (isPublicRoute && token) {
-    return NextResponse.redirect(new URL("/user/dashboard", req.url));
+  // Protect normal user pages.
+  if (isProtectedUserPage && !token) {
+    const loginUrl = new URL("/user/login", req.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Protect admin pages.
+  if (isProtectedAdminPage && !token) {
+    const loginUrl = new URL("/user/login", req.url);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
@@ -40,15 +51,13 @@ export function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/user/dashboard/:path*",
-    "/user/profile/:path*",
-    "/user/password/:path*",
-    "/user/categories/:path*",
-    "/user/cart/:path*",
-    "/user/address/:path*",
     "/user/login",
     "/user/register",
-    "/user/forgot_password",
-    "/user/reset_password",
+    "/user/forgot-password",
+    "/user/reset-password",
+    "/user/dashboard/:path*",
+    "/user/account/:path*",
+    "/user/password/:path*",
+    "/admin/:path*",
   ],
 };

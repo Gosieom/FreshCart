@@ -1,84 +1,71 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-const BACKEND_URL = "http://localhost:5000/api/v1/auth";
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:5000";
 
-async function proxyRequest(
-  req: NextRequest,
+async function handler(
+  request: NextRequest,
   context: { params: Promise<{ path: string[] }> }
 ) {
   const { path } = await context.params;
-  const endpoint = path.join("/");
 
-  const url = `${BACKEND_URL}/${endpoint}`;
+  const backendUrl = `${BACKEND_URL}/api/v1/auth/${path.join("/")}${
+    request.nextUrl.search
+  }`;
 
   const headers = new Headers();
 
-  const cookie = req.headers.get("cookie");
-  if (cookie) {
-    headers.set("cookie", cookie);
+  const authorization = request.headers.get("authorization");
+  const cookie = request.headers.get("cookie");
+  const contentType = request.headers.get("content-type");
+
+  if (authorization) {
+    headers.set("Authorization", authorization);
   }
 
-  const contentType = req.headers.get("content-type");
+  if (cookie) {
+    headers.set("Cookie", cookie);
+  }
+
   if (contentType) {
-    headers.set("content-type", contentType);
+    headers.set("Content-Type", contentType);
   }
 
   let body: BodyInit | undefined;
 
-  if (req.method !== "GET" && req.method !== "HEAD") {
-    body = await req.arrayBuffer();
+  if (request.method !== "GET" && request.method !== "HEAD") {
+    body = await request.arrayBuffer();
   }
 
-  const backendRes = await fetch(url, {
-    method: req.method,
+  const backendResponse = await fetch(backendUrl, {
+    method: request.method,
     headers,
     body,
-    credentials: "include",
   });
 
-  const data = await backendRes.text();
+  const responseHeaders = new Headers();
 
-  const response = new NextResponse(data, {
-    status: backendRes.status,
-    headers: {
-      "content-type":
-        backendRes.headers.get("content-type") || "application/json",
-    },
-  });
+  const responseContentType = backendResponse.headers.get("content-type");
+  const setCookie = backendResponse.headers.get("set-cookie");
 
-  const setCookie = backendRes.headers.get("set-cookie");
-
-  if (setCookie) {
-    response.headers.set("set-cookie", setCookie);
+  if (responseContentType) {
+    responseHeaders.set("Content-Type", responseContentType);
   }
 
-  return response;
+  if (setCookie) {
+    responseHeaders.set("Set-Cookie", setCookie);
+  }
+
+  const responseBody = await backendResponse.arrayBuffer();
+
+  return new Response(responseBody, {
+    status: backendResponse.status,
+    headers: responseHeaders,
+  });
 }
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, context);
-}
-
-export async function POST(
-  req: NextRequest,
-  context: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, context);
-}
-
-export async function PATCH(
-  req: NextRequest,
-  context: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, context);
-}
-
-export async function DELETE(
-  req: NextRequest,
-  context: { params: Promise<{ path: string[] }> }
-) {
-  return proxyRequest(req, context);
-}
+export const GET = handler;
+export const POST = handler;
+export const PATCH = handler;
+export const PUT = handler;
+export const DELETE = handler;
