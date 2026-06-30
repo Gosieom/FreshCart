@@ -1854,3 +1854,29 @@ body {
     font-size: 19px;
   }
 }
+
+.fc_sidebar_nav a {
+  height: 50px;
+  border: none;
+  border-radius: 9px;
+  padding: 0 16px;
+  background: transparent;
+  color: #111111;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.fc_sidebar_nav a:hover {
+  background: #f2f3f2;
+}
+
+.fc_sidebar_nav a.active {
+  background: #004d36;
+  color: #ffffff;
+}
