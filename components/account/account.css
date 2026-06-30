@@ -1,0 +1,1290 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.account_page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #111111;
+}
+
+/* TOP BAR */
+
+.account_topbar {
+  height: 78px;
+  background: #f7f6f2;
+  border-bottom: 1px solid #deded8;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.account_brand_area {
+  width: 245px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+.account_menu_btn {
+  border: none;
+  background: transparent;
+  color: #202124;
+  cursor: pointer;
+  display: flex;
+}
+
+.account_logo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #0a8f08;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+.account_logo img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.account_search {
+  flex: 1;
+  height: 50px;
+  background: #ffffff;
+  border: 1px solid #c9ccd2;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.account_search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #111111;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.account_location,
+.account_cart {
+  color: #111111;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.account_cart {
+  background: #078a08;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 999px;
+}
+
+/* LAYOUT */
+
+.account_layout {
+  display: grid;
+  grid-template-columns: 285px 1fr;
+  min-height: calc(100vh - 78px);
+}
+
+.account_sidebar {
+  border-right: 1px solid #eeeeea;
+  padding: 24px 14px;
+  background: #ffffff;
+}
+
+.account_back_link {
+  height: 48px;
+  padding: 0 14px;
+  color: #111111;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 17px;
+  font-weight: 700;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+}
+
+.account_nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.account_nav a,
+.account_logout {
+  min-height: 46px;
+  border-radius: 8px;
+  padding: 0 14px;
+  color: #111111;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 16px;
+  font-weight: 750;
+  cursor: pointer;
+  text-align: left;
+}
+
+.account_nav a:hover,
+.account_logout:hover {
+  background: #f2f3f2;
+}
+
+.account_nav a.active {
+  background: #202124;
+  color: #ffffff;
+}
+
+.account_logout {
+  width: 100%;
+  margin-top: 22px;
+}
+
+.account_content {
+  padding: 54px 58px 80px;
+  max-width: 1260px;
+}
+
+/* PAGE COMMON */
+
+.account_page_header {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+}
+
+.account_page_header h1 {
+  margin: 0 0 10px;
+  color: #111111;
+  font-size: 36px;
+  font-weight: 950;
+  letter-spacing: -0.7px;
+}
+
+.account_page_header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.account_section {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 0 26px;
+  margin-bottom: 26px;
+}
+
+.account_section h2 {
+  margin: 0 0 18px;
+  color: #111111;
+  font-size: 23px;
+  font-weight: 950;
+}
+
+.account_info_row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  padding: 13px 0;
+}
+
+.account_info_row label {
+  display: block;
+  color: #111111;
+  font-size: 16px;
+  font-weight: 750;
+  margin-bottom: 4px;
+}
+
+.account_info_row p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.account_change_btn {
+  border: none;
+  background: transparent;
+  color: #008a08;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.account_change_btn:hover {
+  text-decoration: underline;
+}
+
+/* PROFILE */
+
+.account_profile_card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.account_avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: #e9fbe8;
+  border: 2px solid #c7efc9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.account_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account_avatar span {
+  color: #078a08;
+  font-size: 34px;
+  font-weight: 950;
+}
+
+.account_upload_btn {
+  width: fit-content;
+  border: none;
+  background: #078a08;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.account_upload_btn input {
+  display: none;
+}
+
+.account_form_grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.account_form_group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.account_form_group label {
+  color: #111111;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.account_form_group input,
+.account_form_group select,
+.account_form_group textarea {
+  min-height: 48px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0 14px;
+  color: #111111;
+  background: #ffffff;
+  font-size: 16px;
+  outline: none;
+}
+
+.account_form_group textarea {
+  padding-top: 12px;
+  min-height: 95px;
+  resize: vertical;
+}
+
+.account_save_btn {
+  margin-top: 22px;
+  border: none;
+  background: #078a08;
+  color: #ffffff;
+  border-radius: 999px;
+  padding: 14px 25px;
+  font-size: 16px;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.account_save_message {
+  margin-left: 14px;
+  color: #078a08;
+  font-size: 15px;
+  font-weight: 850;
+}
+
+/* CARDS */
+
+.account_card_grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.account_card {
+  border: 1px solid #e1e1dc;
+  border-radius: 14px;
+  padding: 20px;
+  background: #ffffff;
+}
+
+.account_card h3 {
+  margin: 0 0 8px;
+  color: #111111;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.account_card p {
+  margin: 0 0 12px;
+  color: #6b7280;
+  line-height: 1.45;
+  font-size: 15px;
+}
+
+.account_card_meta {
+  color: #078a08;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* ORDER */
+
+.order_card {
+  border: 1px solid #e1e1dc;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+.order_top {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+
+.order_top h3 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.order_top p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.order_status {
+  width: fit-content;
+  height: 30px;
+  border-radius: 999px;
+  background: #e9fbe8;
+  color: #078a08;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  font-weight: 900;
+}
+
+.order_items {
+  color: #374151;
+  font-weight: 650;
+  margin-bottom: 14px;
+}
+
+.order_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order_bottom strong {
+  font-size: 20px;
+}
+
+.order_bottom button {
+  border: 1px solid #078a08;
+  background: #ffffff;
+  color: #078a08;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+/* WISHLIST */
+
+.wishlist_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.wishlist_card {
+  border: 1px solid #e1e1dc;
+  border-radius: 16px;
+  padding: 13px;
+  position: relative;
+}
+
+.wishlist_card img {
+  width: 100%;
+  height: 145px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.wishlist_card h3 {
+  margin: 12px 0 5px;
+  font-size: 17px;
+}
+
+.wishlist_card p {
+  margin: 0 0 12px;
+  color: #6b7280;
+}
+
+.wishlist_actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wishlist_actions button {
+  border: none;
+  border-radius: 999px;
+  background: #078a08;
+  color: #ffffff;
+  padding: 10px 15px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.wishlist_remove {
+  background: transparent !important;
+  color: #dc2626 !important;
+}
+
+/* TOGGLES */
+
+.account_toggle_row {
+  min-height: 58px;
+  border-bottom: 1px solid #eeeeea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.account_toggle_row h3 {
+  margin: 0 0 3px;
+  font-size: 17px;
+}
+
+.account_toggle_row p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.account_switch {
+  width: 56px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: #9ca3af;
+  padding: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.account_switch span {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: block;
+  transition: 0.2s;
+}
+
+.account_switch.on {
+  background: #078a08;
+}
+
+.account_switch.on span {
+  transform: translateX(24px);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 980px) {
+  .account_topbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 14px;
+  }
+
+  .account_brand_area {
+    width: auto;
+  }
+
+  .account_search {
+    order: 5;
+    flex-basis: 100%;
+  }
+
+  .account_layout {
+    grid-template-columns: 1fr;
+  }
+
+  .account_sidebar {
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid #eeeeea;
+  }
+
+  .account_nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .account_content {
+    padding: 34px 18px 70px;
+  }
+
+  .account_form_grid,
+  .account_card_grid,
+  .wishlist_grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.account_loading {
+  color: #111111;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.account_profile_actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.account_upload_btn,
+.account_remove_photo_btn {
+  min-height: 44px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.account_upload_btn {
+  background: #078a08;
+  color: #ffffff;
+}
+
+.account_upload_btn:hover {
+  background: #067606;
+}
+
+.account_remove_photo_btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.account_remove_photo_btn:hover {
+  background: #fecaca;
+}
+
+.account_remove_photo_btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.account_save_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.account_save_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.account_shortcut_list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.account_shortcut_card {
+  border: 1px solid #e1e1dc;
+  background: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 52px 1fr 28px;
+  align-items: center;
+  gap: 16px;
+  transition: 0.2s ease;
+}
+
+.account_shortcut_card:hover {
+  background: #f7f7f5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.account_shortcut_icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #078a08;
+  background: #e9fbe8;
+}
+
+.account_shortcut_card h3 {
+  margin: 0 0 4px;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.account_shortcut_card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.account_loading {
+  color: #111111;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.account_profile_actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.account_upload_btn,
+.account_remove_photo_btn {
+  min-height: 44px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.account_upload_btn {
+  background: #078a08;
+  color: #ffffff;
+}
+
+.account_upload_btn:hover {
+  background: #067606;
+}
+
+.account_remove_photo_btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.account_remove_photo_btn:hover {
+  background: #fecaca;
+}
+
+.account_remove_photo_btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.account_photo_note {
+  margin: 12px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.account_save_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.account_save_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.account_shortcut_list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.account_shortcut_card {
+  border: 1px solid #e1e1dc;
+  background: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 52px 1fr 28px;
+  align-items: center;
+  gap: 16px;
+  transition: 0.2s ease;
+}
+
+.account_shortcut_card:hover {
+  background: #f7f7f5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.account_shortcut_icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #078a08;
+  background: #e9fbe8;
+}
+
+.account_shortcut_card h3 {
+  margin: 0 0 4px;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.account_shortcut_card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* UPDATED ACCOUNT SETTINGS UI */
+
+.account_loading {
+  color: #111111;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.account_profile_section {
+  padding-bottom: 38px;
+}
+
+.account_profile_card_large {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin-top: 18px;
+}
+
+.account_avatar_large {
+  width: 126px;
+  height: 126px;
+  border-radius: 50%;
+  background: #e9fbe8;
+  border: 2px solid #bdf3c5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.account_avatar_large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.account_avatar_large span {
+  color: #078a08;
+  font-size: 46px;
+  font-weight: 950;
+}
+
+.account_profile_actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.account_upload_btn,
+.account_remove_photo_btn {
+  min-height: 46px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.account_upload_btn {
+  background: #078a08;
+  color: #ffffff;
+}
+
+.account_upload_btn:hover {
+  background: #067606;
+}
+
+.account_remove_photo_btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.account_remove_photo_btn:hover {
+  background: #fecaca;
+}
+
+.account_remove_photo_btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.account_photo_note {
+  margin: 22px 0 0;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.account_save_btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+.account_save_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.account_shortcut_list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account_shortcut_card {
+  border: 1px solid #e1e1dc;
+  background: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  border-radius: 14px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 58px 1fr 32px;
+  align-items: center;
+  gap: 18px;
+  transition: 0.2s ease;
+}
+
+.account_shortcut_card:hover {
+  background: #f7f7f5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.account_shortcut_icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #078a08;
+  background: #e9fbe8;
+}
+
+.account_shortcut_card h3 {
+  margin: 0 0 5px;
+  color: #111111;
+  font-size: 20px;
+  font-weight: 950;
+}
+
+.account_shortcut_card p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .account_profile_card_large {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .account_avatar_large {
+    width: 112px;
+    height: 112px;
+  }
+
+  .account_avatar_large span {
+    font-size: 40px;
+  }
+
+  .account_shortcut_card {
+    grid-template-columns: 52px 1fr 24px;
+    padding: 18px;
+  }
+
+  .account_shortcut_icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/*  ACCOUNT SETTINGS REDESIGN */
+
+.insta_account_settings {
+  max-width: 1120px;
+}
+
+.insta_account_header {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+}
+
+.insta_account_header h1 {
+  margin: 0 0 10px;
+  color: #111111;
+  font-size: 38px;
+  font-weight: 950;
+  letter-spacing: -0.8px;
+}
+
+.insta_account_header p {
+  margin: 0;
+  color: #5f6b7a;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.insta_settings_section {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 0 28px;
+  margin-bottom: 28px;
+}
+
+.insta_settings_section h2 {
+  margin: 0 0 18px;
+  color: #111111;
+  font-size: 24px;
+  font-weight: 950;
+}
+
+/* PROFILE PHOTO */
+
+.insta_profile_photo_row {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.insta_profile_avatar {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: #e9fbe8;
+  border: 2px solid #bdf3c5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.insta_profile_avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.insta_profile_avatar span {
+  color: #078a08;
+  font-size: 48px;
+  font-weight: 950;
+}
+
+.insta_profile_photo_actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.insta_profile_photo_actions p {
+  width: 100%;
+  margin: 2px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.insta_photo_change_btn,
+.insta_photo_remove_btn {
+  min-height: 44px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.insta_photo_change_btn {
+  background: #078a08;
+  color: #ffffff;
+}
+
+.insta_photo_change_btn:hover {
+  background: #067606;
+}
+
+.insta_photo_remove_btn {
+  background: transparent;
+  color: #dc2626;
+  padding: 0 4px;
+  min-height: 32px;
+  font-size: 14px;
+}
+
+.insta_photo_remove_btn:hover {
+  text-decoration: underline;
+}
+
+.insta_photo_remove_btn:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* ROWS */
+
+.insta_settings_row,
+.insta_password_row {
+  min-height: 86px;
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid #eeeeea;
+  padding: 14px 0;
+  text-decoration: none;
+  color: #111111;
+}
+
+.insta_settings_row:last-child,
+.insta_password_row:last-child {
+  border-bottom: none;
+}
+
+.insta_password_row:hover {
+  background: #f7f7f5;
+  margin: 0 -14px;
+  padding-left: 14px;
+  padding-right: 14px;
+  border-radius: 10px;
+}
+
+.insta_settings_icon {
+  width: 42px;
+  height: 42px;
+  color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insta_settings_content {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.insta_settings_content label {
+  color: #111111;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.insta_settings_content input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #111111;
+  padding: 0 13px;
+  outline: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.insta_settings_content input:focus {
+  border-color: #078a08;
+  box-shadow: 0 0 0 3px rgba(7, 138, 8, 0.12);
+}
+
+.insta_settings_content input[readonly] {
+  background: #f9fafb;
+}
+
+.insta_settings_content p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.insta_change_text {
+  color: #008a08;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+/* SAVE BUTTON */
+
+.insta_save_area {
+  padding: 4px 0 40px;
+}
+
+.insta_save_btn {
+  min-width: 190px;
+  height: 56px;
+  border: none;
+  border-radius: 999px;
+  background: #078a08;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 950;
+}
+
+.insta_save_btn:hover {
+  background: #067606;
+}
+
+.insta_save_btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 760px) {
+  .insta_account_header h1 {
+    font-size: 31px;
+  }
+
+  .insta_profile_photo_row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .insta_profile_avatar {
+    width: 116px;
+    height: 116px;
+  }
+
+  .insta_profile_avatar span {
+    font-size: 42px;
+  }
+
+  .insta_settings_row,
+  .insta_password_row {
+    grid-template-columns: 38px 1fr;
+  }
+
+  .insta_change_text,
+  .insta_password_row > svg:last-child {
+    grid-column: 2;
+  }
+}

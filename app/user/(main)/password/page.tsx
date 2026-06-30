@@ -59,7 +59,7 @@ export default function PasswordUpdatePage() {
     <main className="password_page">
       <section className="password_shell">
         <header className="password_header">
-          <Link href="/user/profile" className="password_back_btn">
+          <Link href="/user/account" className="password_back_btn">
             <ArrowLeft size={24} />
           </Link>
 
